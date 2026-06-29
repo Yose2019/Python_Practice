@@ -1,0 +1,20 @@
+2026-06-28 08:11:02 INFO Device boot initiated
+2026-06-28 08:11:04 INFO Firmware version: 3.1.7
+2026-06-28 08:11:08 INFO Temperature = 39C
+2026-06-28 08:11:12 WARNING Temperature rising
+2026-06-28 08:11:16 INFO Read operation successful
+2026-06-28 08:11:19 ERROR Timeout occurred
+2026-06-28 08:11:23 INFO Retry initiated
+2026-06-28 08:11:28 INFO Temperature = 44C
+2026-06-28 08:11:30 WARNING Temperature high
+2026-06-28 08:11:35 ERROR Sanitize failed
+2026-06-28 08:11:38 INFO Recovery mode entered
+2026-06-28 08:11:42 INFO Read operation successful
+2026-06-28 08:11:48 ERROR Timeout occurred
+2026-06-28 08:11:51 INFO Retry initiated
+2026-06-28 08:11:57 INFO Temperature = 41C
+2026-06-28 08:12:02 INFO Write operation successful
+2026-06-28 08:12:08 WARNING Voltage fluctuation detected
+2026-06-28 08:12:13 ERROR Timeout occurred
+2026-06-28 08:12:18 INFO Recovery successful
+2026-06-28 08:12:22 INFO Device stable

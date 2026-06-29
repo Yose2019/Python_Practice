@@ -1,0 +1,8 @@
+This text file just consists of information regarding the functions. 
+These functions are used to find the length of the list. 
+
+1. The most naive method is to loop and find the count. 
+2. The function which we use is len() function. 
+3. We also have a module called 'operator' and funciton is 'length_hint'
+   from operator import length_hint 
+    This works similar to len function 

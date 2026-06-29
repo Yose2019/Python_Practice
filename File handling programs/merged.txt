@@ -1,0 +1,6 @@
+This is a text file which is meant for understanding only
+Let us try to know what is file handling in pythona lot of
+lines
+for
+program requirements
+to analyze

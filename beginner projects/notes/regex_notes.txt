@@ -1,0 +1,1459 @@
+some basics of regex : 
+^ - indicates the start 
+$ - indicates the end 
+
+^text -> text should be present at the starting or a full match 
+text$ -> should be present at the ending or a fullmatch 
+
+Fullmatch is a method in re
+
+^text$ -> indicates this should be the string, nothing else 
+
+[] -> these indicate that the regex should include anything which is present within these
+[shristhi] -> the exp should contain either of these letters 
+
+Good. Don't copy regexes if you don't understand them. Regex is one of those topics where people often paste patterns from Stack Overflow and then have no idea why they work or fail.
+
+Let's build the understanding from scratch.
+
+---
+
+# What is Regex?
+
+Regex (Regular Expression) is simply a pattern used to match text.
+
+For example:
+
+```python
+import re
+
+re.fullmatch(r"\d+", "123")
+```
+
+means:
+
+> "Does this string contain one or more digits and nothing else?"
+
+Result:
+
+```python
+Match
+```
+
+while
+
+```python
+re.fullmatch(r"\d+", "123abc")
+```
+
+fails.
+
+---
+
+# Basic Symbols
+
+## 1. `^`
+
+Means:
+
+> Start of string
+
+Example:
+
+```regex
+^abc
+```
+
+Matches:
+
+```text
+abc123
+abc
+```
+
+Doesn't match:
+
+```text
+123abc
+```
+
+because the string doesn't start with `abc`.
+
+---
+
+## 2. `$`
+
+Means:
+
+> End of string
+
+Example:
+
+```regex
+abc$
+```
+
+Matches:
+
+```text
+123abc
+abc
+```
+
+Doesn't match:
+
+```text
+abc123
+```
+
+---
+
+## 3. `^` and `$` together
+
+```regex
+^abc$
+```
+
+Means:
+
+> Entire string must be exactly "abc"
+
+Matches:
+
+```text
+abc
+```
+
+Not:
+
+```text
+abc123
+123abc
+```
+
+---
+
+# Character Classes
+
+## `[ ]`
+
+Used to define a set of allowed characters.
+
+Example:
+
+```regex
+[abc]
+```
+
+Means:
+
+> Match a single character that is either a, b, or c
+
+Matches:
+
+```text
+a
+b
+c
+```
+
+Not:
+
+```text
+d
+```
+
+---
+
+## Range
+
+```regex
+[A-Z]
+```
+
+Means:
+
+```text
+Any uppercase letter
+```
+
+---
+
+```regex
+[a-z]
+```
+
+Means:
+
+```text
+Any lowercase letter
+```
+
+---
+
+```regex
+[0-9]
+```
+
+Means:
+
+```text
+Any digit
+```
+
+---
+
+So:
+
+```regex
+[A-Za-z]
+```
+
+Means:
+
+```text
+Any letter
+```
+
+---
+
+And:
+
+```regex
+[A-Za-z0-9]
+```
+
+Means:
+
+```text
+Letter OR digit
+```
+
+---
+
+# Quantifiers
+
+These tell regex how many times something can occur.
+
+---
+
+## `+`
+
+Means:
+
+> One or more
+
+Example:
+
+```regex
+[A-Z]+
+```
+
+Matches:
+
+```text
+A
+AB
+HELLO
+```
+
+Not:
+
+```text
+(empty string)
+```
+
+---
+
+## `*`
+
+Means:
+
+> Zero or more
+
+Example:
+
+```regex
+[A-Z]*
+```
+
+Matches:
+
+```text
+HELLO
+A
+(empty string)
+```
+
+---
+
+## `?`
+
+Means:
+
+> Zero or one
+
+Example:
+
+```regex
+colou?r
+```
+
+Matches:
+
+```text
+color
+colour
+```
+
+---
+
+## `{n,m}`
+
+Means:
+
+> Between n and m times
+
+Example:
+
+```regex
+[A-Z]{3,5}
+```
+
+Matches:
+
+```text
+ABC
+ABCD
+ABCDE
+```
+
+Not:
+
+```text
+AB
+ABCDEF
+```
+
+---
+
+# Special Shortcuts
+
+## `\d`
+
+Means:
+
+```text
+Digit
+```
+
+Equivalent to:
+
+```regex
+[0-9]
+```
+
+---
+
+## `\w`
+
+Means:
+
+```text
+Letter, digit, underscore
+```
+
+Equivalent to:
+
+```regex
+[A-Za-z0-9_]
+```
+
+---
+
+## `.`
+
+Means:
+
+```text
+Any character
+```
+
+Example:
+
+```regex
+a.c
+```
+
+Matches:
+
+```text
+abc
+a1c
+a@c
+```
+
+---
+
+# Parentheses
+
+## `( )`
+
+Used for grouping.
+
+Example:
+
+```regex
+(ab)+
+```
+
+Matches:
+
+```text
+ab
+abab
+ababab
+```
+
+---
+
+# Non-capturing Group
+
+You saw:
+
+```regex
+(?:...)
+```
+
+The `?:` tells regex:
+
+> Group these characters together but don't store them.
+
+Example:
+
+```regex
+(?:abc)+
+```
+
+Same matching behavior as:
+
+```regex
+(abc)+
+```
+
+but slightly more efficient.
+
+---
+
+# Lookaheads
+
+This is the scary part of your password regex.
+
+---
+
+## `(?=...)`
+
+Means:
+
+> Check if something exists ahead, but don't consume it.
+
+Think:
+
+```text
+Verify, don't match.
+```
+
+---
+
+Example:
+
+```regex
+(?=.*[A-Z])
+```
+
+Let's decode.
+
+---
+
+### `.*`
+
+Means:
+
+```text
+Any characters
+```
+
+---
+
+### `[A-Z]`
+
+Means:
+
+```text
+One uppercase letter
+```
+
+---
+
+Together:
+
+```regex
+.*[A-Z]
+```
+
+means:
+
+```text
+Somewhere in the string there is an uppercase letter
+```
+
+---
+
+So:
+
+```regex
+(?=.*[A-Z])
+```
+
+means:
+
+```text
+Verify that an uppercase letter exists somewhere.
+```
+
+---
+
+Similarly:
+
+```regex
+(?=.*[a-z])
+```
+
+Means:
+
+```text
+Must contain lowercase letter.
+```
+
+---
+
+```regex
+(?=.*\d)
+```
+
+Means:
+
+```text
+Must contain digit.
+```
+
+---
+
+# Understanding the Password Regex
+
+Let's rewrite it:
+
+```regex
+^
+(?=.*[a-z])
+(?=.*[A-Z])
+(?=.*\d)
+(?=.*[^A-Za-z\d])
+.{8,64}
+$
+```
+
+Read as English:
+
+1. Start of string
+2. Must contain a lowercase letter
+3. Must contain an uppercase letter
+4. Must contain a digit
+5. Must contain a special character
+6. Total length must be 8–64 characters
+7. End of string
+
+---
+
+Example:
+
+```text
+Password123@
+```
+
+Check:
+
+```text
+lowercase?      yes
+uppercase?      yes
+digit?          yes
+special?        yes
+length?         yes
+```
+
+Passes.
+
+---
+
+# Understanding the Email Regex
+
+```regex
+^[A-Za-z0-9._%+-]+
+@
+[A-Za-z0-9.-]+
+\.
+[A-Za-z]{2,}
+$
+```
+
+Let's break it.
+
+---
+
+## First part
+
+```regex
+[A-Za-z0-9._%+-]+
+```
+
+Allows:
+
+```text
+john
+john.doe
+john_123
+```
+
+before the @
+
+---
+
+## @
+
+Literal @ symbol
+
+```regex
+@
+```
+
+---
+
+## Domain
+
+```regex
+[A-Za-z0-9.-]+
+```
+
+Allows:
+
+```text
+gmail
+yahoo
+company-name
+```
+
+---
+
+## Dot
+
+```regex
+\.
+```
+
+The backslash is important because:
+
+```regex
+.
+```
+
+means any character.
+
+So:
+
+```regex
+\.
+```
+
+means an actual dot.
+
+---
+
+## Extension
+
+```regex
+[A-Za-z]{2,}
+```
+
+Means:
+
+```text
+com
+org
+net
+in
+edu
+```
+
+minimum 2 letters.
+
+---
+
+# Understanding the Username Regex
+
+```regex
+^(?=.{3,30}$)
+[A-Za-z0-9]+
+(?:[._-][A-Za-z0-9]+)*
+$
+```
+
+---
+
+First:
+
+```regex
+(?=.{3,30}$)
+```
+
+Means:
+
+```text
+Length must be between 3 and 30.
+```
+
+---
+
+Then:
+
+```regex
+[A-Za-z0-9]+
+```
+
+Means:
+
+```text
+Must start with one or more letters/digits.
+```
+
+---
+
+Then:
+
+```regex
+(?:[._-][A-Za-z0-9]+)*
+```
+
+Means:
+
+```text
+Optional groups of:
+
+special character
+followed by
+letters/digits
+```
+
+Example:
+
+```text
+john.doe
+john_doe
+john-doe
+```
+
+Allowed.
+
+---
+
+But:
+
+```text
+john..
+john__
+john--
+```
+
+Fail.
+
+Why?
+
+Because after every special character:
+
+```regex
+[._-]
+```
+
+regex requires:
+
+```regex
+[A-Za-z0-9]+
+```
+
+at least one letter or digit.
+
+---
+
+For your current student management project, I'd actually recommend learning regex in this order:
+
+1. `^` and `$`
+2. `[ ]`
+3. `+`, `*`, `?`
+4. `\d`, `\w`
+5. `( )`
+6. `|` (OR operator)
+7. Lookaheads `(?=...)`
+
+Once you understand those seven concepts, you'll be able to read about 90% of validation regexes you find online instead of treating them as magic spells.
+
+
+Absolutely. Forget the fancy names for a moment. Let's build intuition first.
+
+When regex sees:
+
+```regex
+(?
+```
+
+it thinks:
+
+> "Okay, this is not a normal group. Some special instruction is coming."
+
+The next character determines what that instruction is.
+
+---
+
+# 1. `(?:...)` — Group things together, but don't save them
+
+### Example
+
+```regex
+(?:cat|dog)
+```
+
+Means:
+
+> Match either `cat` or `dog`.
+
+---
+
+Now you might ask:
+
+> Why not just use `(cat|dog)`?
+
+You can.
+
+The difference is that normal parentheses **remember** what they matched.
+
+```regex
+(cat|dog)
+```
+
+If it matches:
+
+```text
+dog
+```
+
+Regex stores:
+
+```text
+Group 1 = dog
+```
+
+---
+
+With:
+
+```regex
+(?:cat|dog)
+```
+
+Regex matches exactly the same text, but doesn't store it anywhere.
+
+Think:
+
+```text
+(cat|dog)
+```
+
+= "Match and remember"
+
+```text
+(?:cat|dog)
+```
+
+= "Match but don't remember"
+
+---
+
+### Real-world analogy
+
+Normal group:
+
+```text
+Teacher: Write down everyone's name.
+```
+
+Non-capturing group:
+
+```text
+Teacher: Just count the students. Don't write names.
+```
+
+---
+
+# 2. `(?=...)` — Check that something exists ahead
+
+This is called a **positive lookahead**.
+
+Ignore the name.
+
+Think:
+
+> "Before continuing, verify that this condition is true."
+
+---
+
+Example:
+
+```regex
+(?=.*[A-Z])
+```
+
+Means:
+
+> Check that somewhere ahead there is an uppercase letter.
+
+---
+
+Imagine the string:
+
+```text
+helloA123
+```
+
+Regex looks ahead and asks:
+
+```text
+Is there an uppercase letter?
+```
+
+Answer:
+
+```text
+Yes, A
+```
+
+Continue matching.
+
+---
+
+Now:
+
+```text
+hello123
+```
+
+Regex asks:
+
+```text
+Is there an uppercase letter?
+```
+
+Answer:
+
+```text
+No
+```
+
+Fail immediately.
+
+---
+
+Think of it as a security guard:
+
+```text
+Before entering:
+Show me an uppercase letter.
+```
+
+---
+
+# 3. `(?!...)` — Check that something does NOT exist ahead
+
+This is called a **negative lookahead**.
+
+Again, ignore the name.
+
+Think:
+
+> "Verify that this condition is NOT true."
+
+---
+
+Example:
+
+```regex
+(?!.*admin)
+```
+
+Means:
+
+> Ensure the word "admin" does not appear anywhere.
+
+---
+
+String:
+
+```text
+john123
+```
+
+Check:
+
+```text
+Contains admin?
+No
+```
+
+Pass.
+
+---
+
+String:
+
+```text
+johnadmin123
+```
+
+Check:
+
+```text
+Contains admin?
+Yes
+```
+
+Fail.
+
+---
+
+Think:
+
+```text
+Positive lookahead (?=...)
+    -> Must exist
+
+Negative lookahead (?!...)
+    -> Must NOT exist
+```
+
+---
+
+# Why the password regex uses `(?=...)`
+
+Look at:
+
+```regex
+^(?=.*[a-z])
+ (?=.*[A-Z])
+ (?=.*\d)
+ (?=.*[^A-Za-z\d])
+ .{8,64}$
+```
+
+Regex is basically doing:
+
+```text
+Check:
+✓ lowercase exists
+✓ uppercase exists
+✓ digit exists
+✓ special character exists
+
+Then:
+
+✓ length is 8-64
+```
+
+---
+
+# Visual Summary
+
+### Normal group
+
+```regex
+(cat)
+```
+
+Meaning:
+
+```text
+Match cat
+Remember cat
+```
+
+---
+
+### Non-capturing group
+
+```regex
+(?:cat)
+```
+
+Meaning:
+
+```text
+Match cat
+Don't remember it
+```
+
+---
+
+### Positive lookahead
+
+```regex
+(?=cat)
+```
+
+Meaning:
+
+```text
+Check that cat exists ahead
+Do not consume it
+```
+
+---
+
+### Negative lookahead
+
+```regex
+(?!cat)
+```
+
+Meaning:
+
+```text
+Check that cat does NOT exist ahead
+Do not consume it
+```
+
+---
+
+One more thing: as a beginner learning regex for your authentication system, you can safely ignore capturing vs non-capturing groups for now. The concepts that will help you immediately are:
+
+```text
+^      Start
+$      End
+[]     Allowed characters
++      One or more
+*      Zero or more
+?      Optional
+{n,m}  Range
+\d     Digit
+.      Any character
+(?=)   Must contain
+(?! )  Must not contain
+```
+
+Once you're comfortable with those, 90% of username, email, and password validation regexes become readable.
+Yes, your company analogy is actually quite good.
+
+Think of it like this:
+
+```text
+Before entering the company:
+
+✓ Must have ID card
+✓ Must have employee badge
+✓ Must have shoes
+
+✗ Must not have weapons
+✗ Must not have alcohol
+```
+
+In regex:
+
+```regex
+(?=...)
+```
+
+means:
+
+> Must have this.
+
+and
+
+```regex
+(?!...)
+```
+
+means:
+
+> Must not have this.
+
+So you're already thinking about it correctly.
+
+---
+
+Now to your question:
+
+> Why do we write `.*` inside the lookahead?
+
+For example:
+
+```regex
+(?=.*[A-Z])
+```
+
+Why not simply:
+
+```regex
+(?=[A-Z])
+```
+
+---
+
+### Case 1
+
+```regex
+(?=[A-Z])
+```
+
+means:
+
+> Right here, at the current position, the next character must be uppercase.
+
+Example:
+
+String:
+
+```text
+helloA
+^
+```
+
+Regex starts at `h`.
+
+Check:
+
+```regex
+(?=[A-Z])
+```
+
+Is `h` uppercase?
+
+No.
+
+Fail.
+
+---
+
+### Case 2
+
+```regex
+(?=.*[A-Z])
+```
+
+means:
+
+```text
+.*      -> Skip any number of characters
+[A-Z]   -> Eventually find an uppercase letter
+```
+
+So now regex asks:
+
+> If I scan forward through the string, can I find an uppercase letter somewhere?
+
+For:
+
+```text
+helloA
+```
+
+it scans:
+
+```text
+h e l l o A
+          ^
+```
+
+Finds `A`.
+
+Passes.
+
+---
+
+This is why most password validations use:
+
+```regex
+(?=.*[something])
+```
+
+rather than
+
+```regex
+(?=[something])
+```
+
+because we usually mean:
+
+> "The string must contain at least one uppercase/digit/special character somewhere."
+
+not
+
+> "The first character must be uppercase."
+
+---
+
+Now regarding:
+
+> so if I say `(?![@])`
+
+Not exactly.
+
+Let's see what it means.
+
+```regex
+(?![@])
+```
+
+means:
+
+> At the current position, the next character must NOT be `@`.
+
+Example:
+
+String:
+
+```text
+hello
+^
+```
+
+First character is `h`.
+
+Is it `@`?
+
+No.
+
+Pass.
+
+---
+
+String:
+
+```text
+@hello
+^
+```
+
+First character is `@`.
+
+Fail.
+
+---
+
+Notice something important:
+
+It only checked the current position.
+
+It did **not** check the whole string.
+
+---
+
+If you want:
+
+> "The string must not contain @ anywhere"
+
+then you'd write:
+
+```regex
+(?!.*@)
+```
+
+Now:
+
+```text
+.*    -> scan the whole string
+@     -> look for @
+```
+
+The negative lookahead says:
+
+> Ensure that scanning the whole string does NOT find an @.
+
+---
+
+Examples:
+
+```text
+hello
+```
+
+Pass.
+
+---
+
+```text
+hello123
+```
+
+Pass.
+
+---
+
+```text
+hello@123
+```
+
+Fail.
+
+---
+
+So a useful mental rule is:
+
+```regex
+(?=X)
+```
+
+Check that X exists.
+
+```regex
+(?!X)
+```
+
+Check that X does not exist.
+
+And:
+
+```regex
+.*
+```
+
+often means:
+
+> Search through the entire string.
+
+---
+
+And yes, for authentication systems, you don't need to memorize every regex feature.
+
+If you know these, you're already ahead of most developers:
+
+```text
+^        start
+$        end
+[]       character set
++        one or more
+*        zero or more
+?        optional
+{n,m}    range
+\d       digit
+\w       word character
+.        any character
+(?=...)  must contain
+(?!...)  must not contain
+```
+
+That's enough to understand and write most username, password, email, and input-validation regexes you'll encounter in real projects.
