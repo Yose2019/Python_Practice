@@ -1,0 +1,22 @@
+{
+    "ec097": {
+        "id": "ec097",
+        "name": "Shristhi N Akkalkot",
+        "age": 24,
+        "gender": "female",
+        "subject1": "msp",
+        "subject2": "dsp",
+        "mark_s1": 99,
+        "mark_s2": 98
+    },
+    "ec999": {
+        "id": "ec999",
+        "name": "Anonymous",
+        "age": 23,
+        "gender": "Female",
+        "subject1": "msp",
+        "subject2": "cs1",
+        "mark_s1": 25,
+        "mark_s2": 36
+    }
+}

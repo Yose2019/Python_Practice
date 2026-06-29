@@ -1,0 +1,29 @@
+Deadline : 25th April 2026 (the initial idea completed)
+
+Improvement 1 : 
+To improve upon the design originally -> use of dictionaries 
+Replacing the subject with subject id -> using another class for the same which holds all the subjects and subject id 
+Can create a statuc method for the subject id 
+The application is a simple application which deals with the beginner level application of student management system. 
+
+The requiremnts are as follows and the design can be later followed :
+1. Add a student ( his/her name, age, gender, id, marks for three subjects)
+2. remove a student 
+3. edit the student info (one field or all the fields)
+4. view the student or entire data 
+5. report of the student
+5. Exit the application 
+
+DESIGN : Three modules 
+1. student module with student class 
+2. student operations with all the functionality
+3. the main UI 
+
+Later stages developement : 
+-> can replace subjects with subject id to fetch the subject (done in V2)
+-> can add more fields 
+-> can plot the student's scores and performance using a radial graph with subjects as axis 
+-> can make an interactive dash board
+-> add multiple students together 
+-> segregation in user type and privileges (moderately done in V2)
+
