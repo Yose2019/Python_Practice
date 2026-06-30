@@ -1,0 +1,16 @@
+2026-06-29 09:01:02 INFO Device boot initiated
+2026-06-29 09:01:07 INFO Temperature = 38C
+2026-06-29 09:01:11 INFO Read operation successful
+2026-06-29 09:01:16 INFO Temperature = 41C
+2026-06-29 09:01:21 WARNING Temperature rising
+2026-06-29 09:01:28 INFO Temperature = 45C
+2026-06-29 09:01:33 ERROR Timeout occurred
+2026-06-29 09:01:39 INFO Retry initiated
+2026-06-29 09:01:44 INFO Temperature = 42C
+2026-06-29 09:01:51 INFO Write operation successful
+2026-06-29 09:01:58 WARNING Voltage fluctuation detected
+2026-06-29 09:02:05 INFO Temperature = 47C
+2026-06-29 09:02:12 ERROR Sanitize failed
+2026-06-29 09:02:18 INFO Recovery initiated
+2026-06-29 09:02:24 INFO Temperature = 40C
+2026-06-29 09:02:30 INFO Device stable
