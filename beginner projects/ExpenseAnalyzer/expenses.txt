@@ -1,0 +1,15 @@
+Food 120
+Travel 50
+Coffee 40
+Food 200
+Bills 800
+Travel 100
+Snacks 60
+Food 150
+Entertainment 300
+Coffee 70
+Bills 450
+Travel 90
+Snacks 30
+Food 250
+Entertainment 150
