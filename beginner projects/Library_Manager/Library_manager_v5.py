@@ -1,6 +1,6 @@
 '''
-The phase 4 of the library manager is here
-This includes the functionalities add, view, and search
+The phase 5 of the library manager is here
+This includes the functionalities add, view, search and delete
 '''
 from datetime import datetime
 
@@ -20,21 +20,21 @@ class Utilities:
 
         print("Book Info required".center(50, "="))
         while True:    
-            book_title = input("Enter the book title : ")
-            if book_title.strip() == "":
+            book_title = input("Enter the book title : ").strip()
+            if book_title == "":
                 print("Information entered cannot be invalid or an empty string - redo the process")
                 continue
             break
 
         while True:
-            book_author = input("Enter the name of the book author : ")
-            if book_author.strip() == "":
+            book_author = input("Enter the name of the book author : ").strip()
+            if book_author == "":
                 print("Information entered cannot be invalid or an empty string - redo the process")
                 continue
             break
 
         while True:
-            publication_year = input("Enter the year of publication : ")
+            publication_year = input("Enter the year of publication : ").strip()
             if not publication_year.isdecimal():
                 print("Publication year has to be an numbers only")
                 continue
@@ -44,8 +44,8 @@ class Utilities:
             break 
 
         while True:
-            book_genre = input("Enter the genre of the book : ")
-            if book_genre.strip() == "":
+            book_genre = input("Enter the genre of the book : ").strip()
+            if book_genre == "":
                 print("Information entered cannot be invalid or an empty string - redo the process")
                 continue
             break
@@ -103,24 +103,46 @@ class LibraryFunctions:
 
 
     def view_books(self):
-        if len(self.library_collection) == 0:
+        if not self.library_collection:
             print("Colllection is empty, add books to the library")
             return 
         Utilities.formatted_output(self.library_collection) 
 
 
-    def search_book(self):
-        book_title = input("Enter the title of book to be searched : ").title()
+    def search_book(self, book_title = None):
+        if not self.library_collection:
+            print("Collection is empty, add book information")
+            return False
+        
+        if book_title is None:
+            book_title = input("Enter the title of book to be searched : ").strip().title()
+
         if book_title not in self.library_collection.keys():
             print("Book not found")
-            return
+            return False
         else:
             print("Book found".center(50, "="))
             Utilities.print_book_info(self.library_collection[book_title])
-            return
-
+            return True
         
-
+    def delete_book(self):
+        if not self.library_collection:
+            print("No books in the library, add books to proceed")
+            return
+        book_title = input("Enter the title of the book you want to deal with : ").strip().title()
+        if not self.search_book(book_title = book_title):
+            return 
+        option = input("Do you want to delete the book(y/n) : ").lower()
+        if option == 'y':
+            del self.library_collection[book_title]
+            print("book deleted successfully")
+        elif option == 'n':
+            print("Book deletion process aborted")
+        else:
+            print("Invalid option selected")
+        
+        return
+        
 
 def main():
     '''
@@ -149,7 +171,7 @@ def main():
             elif choice == 3:
                 library_functions.search_book()
             elif choice == 4:
-                print("Remove Book selected")
+                library_functions.delete_book()
             elif choice == 5:
                 print("Thankyou for using personal library manager")
                 break 

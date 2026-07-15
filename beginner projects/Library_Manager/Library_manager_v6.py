@@ -1,8 +1,9 @@
 '''
-The phase 4 of the library manager is here
-This includes the functionalities add, view, and search
+The phase 6 of the library manager is here
+This includes the functionalities add, view, search and delete
 '''
 from datetime import datetime
+import os
 
 class Utilities:
     '''
@@ -20,21 +21,21 @@ class Utilities:
 
         print("Book Info required".center(50, "="))
         while True:    
-            book_title = input("Enter the book title : ")
-            if book_title.strip() == "":
+            book_title = input("Enter the book title : ").strip()
+            if book_title == "":
                 print("Information entered cannot be invalid or an empty string - redo the process")
                 continue
             break
 
         while True:
-            book_author = input("Enter the name of the book author : ")
-            if book_author.strip() == "":
+            book_author = input("Enter the name of the book author : ").strip()
+            if book_author == "":
                 print("Information entered cannot be invalid or an empty string - redo the process")
                 continue
             break
 
         while True:
-            publication_year = input("Enter the year of publication : ")
+            publication_year = input("Enter the year of publication : ").strip()
             if not publication_year.isdecimal():
                 print("Publication year has to be an numbers only")
                 continue
@@ -44,8 +45,8 @@ class Utilities:
             break 
 
         while True:
-            book_genre = input("Enter the genre of the book : ")
-            if book_genre.strip() == "":
+            book_genre = input("Enter the genre of the book : ").strip()
+            if book_genre == "":
                 print("Information entered cannot be invalid or an empty string - redo the process")
                 continue
             break
@@ -68,12 +69,66 @@ class Utilities:
             print(f"{key}".ljust(30) + ":" + f"{value}".rjust(40))
         return
 
+    @staticmethod # hardcoding the filename as of now
+    def save_data(library_infomation, file_path = None):
+        if file_path is None:
+            file_path = r"D:\practice\beginner projects\Library_Manager\LibraryManager.txt"
+
+        if not library_infomation:
+            return 
+        
+        
+        with open(file_path, 'w') as f:
+            for value in library_infomation.values():
+                title, author, published_year, genre = value["title"].strip(), value["author"].strip(), value["published year"].strip(), value["genre"].strip()
+                write_line = f"{title},{author},{published_year},{genre}\n"
+                f.write(write_line)
+
+        return 
+                
+    @staticmethod
+    def get_saved_data(file_path = None):
+        if file_path is None:
+            file_path = r"D:\practice\beginner projects\Library_Manager\LibraryManager.txt"
+        else:
+            file_path = file_path
+
+        if not os.path.exists(file_path):
+            with open(r"D:\practice\beginner projects\Library_Manager\LibraryManager.txt", 'w') as f:
+                print("file opened")
+
+        if not os.path.getsize(file_path):
+            return {}
+        
+        key_list = []
+        library_data = {}
+        with open(file_path, 'r') as f:
+            for line in f:
+                elements = line.split(",")
+                print(elements)
+                key_list.append(elements[0])
+ 
+        with open(file_path, 'r') as f:
+            key = 0           
+            for line in f:
+                print(line)
+                book_info = line.split(",")
+                print(book_info)
+                library_data[key_list[key]] = {
+                    "title" : book_info[0],
+                    "author" : book_info[1],
+                    "published year" : book_info[2],
+                    "genre" : book_info[3]
+                }
+                key += 1
+
+        return library_data
 
 class LibraryFunctions:
     '''
     These are the main function performing the task
     '''
-    library_collection = {}
+    library_collection = Utilities.get_saved_data()
 
     def add_book(self):
         book_title, book_author, publication_year, book_genre = Utilities.fetch_bookinfo_to_add()
@@ -103,24 +158,46 @@ class LibraryFunctions:
 
 
     def view_books(self):
-        if len(self.library_collection) == 0:
+        if not self.library_collection:
             print("Colllection is empty, add books to the library")
             return 
         Utilities.formatted_output(self.library_collection) 
 
 
-    def search_book(self):
-        book_title = input("Enter the title of book to be searched : ").title()
+    def search_book(self, book_title = None):
+        if not self.library_collection:
+            print("Collection is empty, add book information")
+            return False
+        
+        if book_title is None:
+            book_title = input("Enter the title of book to be searched : ").strip().title()
+
         if book_title not in self.library_collection.keys():
             print("Book not found")
-            return
+            return False
         else:
             print("Book found".center(50, "="))
             Utilities.print_book_info(self.library_collection[book_title])
-            return
-
+            return True
         
-
+    def delete_book(self):
+        if not self.library_collection:
+            print("No books in the library, add books to proceed")
+            return
+        book_title = input("Enter the title of the book you want to deal with : ").strip().title()
+        if not self.search_book(book_title = book_title):
+            return 
+        option = input("Do you want to delete the book(y/n) : ").lower()
+        if option == 'y':
+            del self.library_collection[book_title]
+            print("book deleted successfully")
+        elif option == 'n':
+            print("Book deletion process aborted")
+        else:
+            print("Invalid option selected")
+        
+        return
+        
 
 def main():
     '''
@@ -149,8 +226,9 @@ def main():
             elif choice == 3:
                 library_functions.search_book()
             elif choice == 4:
-                print("Remove Book selected")
+                library_functions.delete_book()
             elif choice == 5:
+                Utilities.save_data(library_functions.library_collection)
                 print("Thankyou for using personal library manager")
                 break 
 
